@@ -64,12 +64,13 @@ function ComposeMail({ onClose, onMailSent }) {
       const newMailRef = push(ref(db, "emails"));
 
       await set(newMailRef, {
-        sender: user.email.toLowerCase(),
-        receiver: receiver.trim().toLowerCase(),
-        subject: subject.trim(),
-        body: messageHTML,
-        createdAt: Date.now()
-      });
+  sender: user.email.toLowerCase(),
+  receiver: receiver.trim().toLowerCase(),
+  subject: subject.trim(),
+  body: messageHTML,
+  createdAt: Date.now(),
+  read: false
+});
 
       setReceiver("");
       setSubject("");
