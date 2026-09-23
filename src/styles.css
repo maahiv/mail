@@ -1,0 +1,162 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+}
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #fff;
+}
+
+.top-navbar {
+  position: relative;
+  z-index: 5;
+  height: 60px;
+  background: #fff;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.brand {
+  display: flex !important;
+  align-items: center;
+  gap: 4px;
+  color: #0a94dc !important;
+  font-size: 19px;
+  font-weight: 400;
+}
+
+.brand-mark {
+  color: #198754;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.nav-links {
+  margin-left: 4px;
+}
+
+.nav-links .nav-link {
+  color: #333 !important;
+  font-size: 12px;
+  padding: 8px 14px !important;
+}
+
+.blue-shape {
+  position: absolute;
+  z-index: 1;
+  top: 60px;
+  right: 0;
+  width: 40%;
+  height: 48%;
+  background: #0d6efd;
+  border-bottom-left-radius: 75% 62%;
+  border-top-left-radius: 20% 15%;
+}
+
+.signup-area {
+  position: relative;
+  z-index: 3;
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 5vh;
+}
+
+.signup-card {
+  width: 196px;
+  min-height: 222px;
+  border: 1px solid #d7d7d7;
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+}
+
+.signup-card .card-body {
+  padding: 24px 13px 20px;
+}
+
+.signup-title {
+  margin: 0 0 19px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  color: #111;
+}
+
+.signup-card .form-control {
+  height: 27px;
+  min-height: 27px;
+  padding: 4px 7px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  font-size: 9px;
+}
+
+.signup-card .form-control::placeholder {
+  color: #b5b5b5;
+}
+
+.signup-card .form-control:focus {
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
+}
+
+.signup-button {
+  height: 27px;
+  border: 0 !important;
+  border-radius: 15px !important;
+  background: #0d9eea !important;
+  font-size: 9px;
+}
+
+.signup-button:hover {
+  background: #078ed4 !important;
+}
+
+.message {
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  font-size: 8px;
+}
+
+.login-button {
+  width: 196px;
+  height: 33px;
+  margin-top: 10px;
+  border-color: #9db5aa !important;
+  border-radius: 4px;
+  background: #effaf4;
+  color: #333;
+  font-size: 9px;
+}
+
+.login-button:hover {
+  background: #e3f5eb;
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  .blue-shape {
+    width: 55%;
+    height: 38%;
+  }
+
+  .signup-area {
+    min-height: calc(100vh - 60px);
+  }
+}

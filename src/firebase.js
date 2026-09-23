@@ -1,0 +1,16 @@
+// Replace the values below with your Firebase project configuration.
+// Firebase Console -> Project settings -> Your apps -> Web app
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCOi1Qf4lKwZnT9tmGFXTWFf8DarL_diss",
+  authDomain: "mail-eb2bc.firebaseapp.com",
+  projectId: "mail-eb2bc",
+  storageBucket: "mail-eb2bc.firebasestorage.app",
+  messagingSenderId: "416702589201",
+  appId: "1:416702589201:web:037139b4c4ca5843da04b0"
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
