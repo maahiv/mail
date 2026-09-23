@@ -12,131 +12,85 @@ body,
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: #ffffff;
+  background: #fff;
 }
 
 .app {
-  position: relative;
   min-height: 100vh;
-  overflow: hidden;
   background: #fff;
 }
 
-.top-navbar {
-  position: relative;
-  z-index: 5;
-  height: 60px;
-  background: #fff;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.brand {
-  display: flex !important;
-  align-items: center;
-  gap: 4px;
-  color: #0a94dc !important;
-  font-size: 19px;
-  font-weight: 400;
-}
-
-.brand-mark {
-  color: #198754;
-  font-size: 30px;
-  line-height: 1;
-}
-
-.nav-links {
-  margin-left: 4px;
-}
-
-.nav-links .nav-link {
-  color: #333 !important;
-  font-size: 12px;
-  padding: 8px 14px !important;
-}
-
-.blue-shape {
-  position: absolute;
-  z-index: 1;
-  top: 60px;
-  right: 0;
-  width: 40%;
-  height: 48%;
-  background: #0d6efd;
-  border-bottom-left-radius: 75% 62%;
-  border-top-left-radius: 20% 15%;
-}
-
-.signup-area {
-  position: relative;
-  z-index: 3;
-  min-height: calc(100vh - 60px);
+/* Signup & Login container */
+.auth-area {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-bottom: 5vh;
+  background: #fff;
 }
 
-.signup-card {
-  width: 196px;
-  min-height: 222px;
+/* Main card */
+.auth-card {
+  width: 203px;
+  min-height: 225px;
   border: 1px solid #d7d7d7;
   border-radius: 0;
   background: #fff;
   box-shadow: none;
 }
 
-.signup-card .card-body {
-  padding: 24px 13px 20px;
+.auth-card .card-body {
+  padding: 25px 13px 18px;
 }
 
-.signup-title {
-  margin: 0 0 19px;
+/* Heading */
+.auth-title {
+  margin: 0 0 22px;
   text-align: center;
   font-size: 16px;
   font-weight: 400;
   color: #111;
 }
 
-.signup-card .form-control {
-  height: 27px;
-  min-height: 27px;
-  padding: 4px 7px;
-  border: 1px solid #dddddd;
+/* Inputs */
+.auth-card .form-control {
+  height: 31px;
+  min-height: 31px;
+  padding: 5px 8px;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 9px;
+  font-size: 10px;
 }
 
-.signup-card .form-control::placeholder {
-  color: #b5b5b5;
-}
-
-.signup-card .form-control:focus {
+.auth-card .form-control:focus {
   box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
 }
 
-.signup-button {
+/* Login / Signup button */
+.auth-button {
   height: 27px;
   border: 0 !important;
   border-radius: 15px !important;
   background: #0d9eea !important;
-  font-size: 9px;
+  font-size: 10px;
 }
 
-.signup-button:hover {
+.auth-button:hover {
   background: #078ed4 !important;
 }
 
+/* Error / Success message */
 .message {
   padding: 6px 8px;
   margin-bottom: 8px;
-  font-size: 8px;
+  font-size: 9px;
 }
 
-.login-button {
-  width: 196px;
-  height: 33px;
+/* Switch Signup/Login button */
+.switch-button {
+  width: 203px;
+  height: 28px;
   margin-top: 10px;
   border-color: #9db5aa !important;
   border-radius: 4px;
@@ -145,18 +99,41 @@ body {
   font-size: 9px;
 }
 
-.login-button:hover {
+.switch-button:hover {
   background: #e3f5eb;
   color: #333;
 }
 
-@media (max-width: 600px) {
-  .blue-shape {
-    width: 55%;
-    height: 38%;
-  }
+/* Forgot password */
+.forgot-button {
+  display: block;
+  margin: 1px auto 0;
+  padding: 0;
+  font-size: 10px;
+  text-decoration: underline;
+}
 
-  .signup-area {
-    min-height: calc(100vh - 60px);
+/* Welcome screen */
+.welcome-screen {
+  min-height: 100vh;
+  background: #fff;
+  padding: 25px 15px;
+}
+
+.welcome-screen h2 {
+  margin: 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #aaa;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .auth-card,
+  .switch-button {
+    width: 85%;
+    max-width: 203px;
   }
 }
