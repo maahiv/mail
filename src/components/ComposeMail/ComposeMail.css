@@ -1,0 +1,111 @@
+.compose-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.compose-box {
+  width: 100%;
+  max-width: 750px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+}
+
+.compose-header {
+  background: #f2f4f7;
+  padding: 13px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.compose-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #202124;
+}
+
+.compose-close {
+  border: none;
+  background: transparent;
+  font-size: 25px;
+  cursor: pointer;
+  color: #555;
+}
+
+.compose-body {
+  padding: 0 18px 18px;
+}
+
+.compose-row {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.compose-row input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 14px 4px;
+  font-size: 14px;
+}
+
+.compose-editor {
+  min-height: 300px;
+  padding-top: 10px;
+}
+
+.compose-editor .rdw-editor-wrapper {
+  min-height: 300px;
+}
+
+.compose-editor .rdw-editor-main {
+  min-height: 220px;
+  padding: 5px;
+}
+
+.compose-editor .rdw-editor-toolbar {
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.compose-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 9px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.compose-footer {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 10px;
+}
+
+.send-button {
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.send-button:hover {
+  background: #1d4ed8;
+}
+
+.send-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
