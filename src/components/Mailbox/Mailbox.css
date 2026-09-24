@@ -150,7 +150,7 @@
 
 .mail-item {
   display: grid;
-  grid-template-columns: 20px 260px 1fr 120px;
+  grid-template-columns: 20px 260px 1fr 120px 70px;
   gap: 12px;
   padding: 17px 20px;
   border-bottom: 1px solid #e5e7eb;
@@ -167,7 +167,7 @@
   background: #f8fafc;
 }
 
-/* Blue dot */
+/* ================= BLUE DOT ================= */
 
 .mail-dot-area {
   display: flex;
@@ -183,7 +183,7 @@
   display: inline-block;
 }
 
-/* Sender */
+/* ================= SENDER ================= */
 
 .mail-sender {
   overflow: hidden;
@@ -201,7 +201,7 @@
   color: #5f6368;
 }
 
-/* Subject + message */
+/* ================= SUBJECT ================= */
 
 .mail-preview {
   min-width: 0;
@@ -229,7 +229,7 @@
   font-weight: 400;
 }
 
-/* Date */
+/* ================= DATE ================= */
 
 .mail-date {
   color: #6b7280;
@@ -238,7 +238,24 @@
   white-space: nowrap;
 }
 
-/* Empty inbox */
+/* ================= DELETE BUTTON ================= */
+
+.delete-mail-button {
+  border: none;
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.delete-mail-button:hover {
+  background: #fecaca;
+}
+
+/* ================= EMPTY MAIL ================= */
 
 .empty-mail {
   padding: 50px;
@@ -277,29 +294,46 @@
   font-size: 24px;
 }
 
-.mail-info {
-  margin-bottom: 15px;
+/* ================= OPENED MAIL BOX ================= */
+
+.opened-mail-box {
+  border: 1px solid #38bdf8;
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 10px;
+  background: white;
 }
 
-.mail-info p {
-  color: #555;
+.opened-mail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.opened-mail-header p {
+  margin: 5px 0;
   font-size: 14px;
-  margin: 6px 0;
+  color: #555;
 }
 
-.open-mail hr {
+.opened-mail-date {
+  font-size: 13px !important;
+  color: #6b7280 !important;
+}
+
+.opened-mail-box hr {
   border: none;
   border-top: 1px solid #e5e7eb;
-  margin: 20px 0;
+  margin: 15px 0;
 }
 
-/* Complete message */
+/* ================= COMPLETE MESSAGE ================= */
 
 .mail-content {
   padding-top: 10px;
-  line-height: 1.6;
   color: #202124;
   font-size: 15px;
+  line-height: 1.6;
   word-wrap: break-word;
 }
 
@@ -315,16 +349,21 @@
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
+
   .mail-sidebar {
     width: 200px;
   }
 
   .mail-item {
-    grid-template-columns: 20px 180px 1fr 90px;
+    grid-template-columns: 20px 180px 1fr 90px 65px;
   }
+
 }
 
+/* ================= MOBILE ================= */
+
 @media (max-width: 700px) {
+
   .mailbox-page {
     flex-direction: column;
   }
@@ -380,45 +419,19 @@
     text-align: left;
   }
 
+  .delete-mail-button {
+    grid-column: 2;
+    width: fit-content;
+  }
+
   .open-mail {
     margin: 10px;
     padding: 18px;
   }
-}
-.opened-mail-box {
-  border: 1px solid #38bdf8;
-  border-radius: 5px;
-  padding: 20px;
-  margin-top: 10px;
-  background: white;
-}
 
-.opened-mail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
+  .opened-mail-header {
+    flex-direction: column;
+    gap: 8px;
+  }
 
-.opened-mail-header p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: #555;
-}
-
-.opened-mail-date {
-  font-size: 13px !important;
-  color: #6b7280 !important;
-}
-
-.opened-mail-box hr {
-  border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 15px 0;
-}
-
-.mail-content {
-  color: #202124;
-  font-size: 15px;
-  line-height: 1.6;
-  word-wrap: break-word;
 }

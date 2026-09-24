@@ -10,7 +10,8 @@ import {
   orderByChild,
   equalTo,
   get,
-  update
+  update,
+  remove
 } from "firebase/database";
 
 import { signOut } from "firebase/auth";
@@ -46,6 +47,17 @@ function mailReducer(state, action) {
           mail.id === action.payload
             ? { ...mail, read: true }
             : mail
+        )
+      };
+
+    case "DELETE_MAIL":
+      return {
+        ...state,
+        inbox: state.inbox.filter(
+          (mail) => mail.id !== action.payload
+        ),
+        sent: state.sent.filter(
+          (mail) => mail.id !== action.payload
         )
       };
 
@@ -177,6 +189,25 @@ function Mailbox({ onLogout }) {
     }
   };
 
+  // Delete mail
+  const handleDeleteMail = async (mailId) => {
+    try {
+      await remove(ref(db, `emails/${mailId}`));
+
+      dispatch({
+        type: "DELETE_MAIL",
+        payload: mailId
+      });
+
+      setSelectedMail(null);
+    } catch (error) {
+      console.error(
+        "Error deleting mail:",
+        error
+      );
+    }
+  };
+
   // Logout
   const handleLogout = async () => {
     try {
@@ -291,55 +322,55 @@ function Mailbox({ onLogout }) {
         {/* Open Mail */}
         {selectedMail ? (
 
-  <div className="open-mail">
+          <div className="open-mail">
 
-    <button
-      className="back-button"
-      onClick={() => setSelectedMail(null)}
-    >
-      ← Back
-    </button>
+            <button
+              className="back-button"
+              onClick={() => setSelectedMail(null)}
+            >
+              ← Back
+            </button>
 
-    <h2>{selectedMail.subject}</h2>
+            <h2>{selectedMail.subject}</h2>
 
-    <div className="opened-mail-box">
+            <div className="opened-mail-box">
 
-      <div className="opened-mail-header">
+              <div className="opened-mail-header">
 
-        <div>
-          <p>
-            <strong>From:</strong>{" "}
-            {selectedMail.sender}
-          </p>
+                <div>
+                  <p>
+                    <strong>From:</strong>{" "}
+                    {selectedMail.sender}
+                  </p>
 
-          <p>
-            <strong>To:</strong>{" "}
-            {selectedMail.receiver}
-          </p>
-        </div>
+                  <p>
+                    <strong>To:</strong>{" "}
+                    {selectedMail.receiver}
+                  </p>
+                </div>
 
-        <p className="opened-mail-date">
-          {new Date(
-            selectedMail.createdAt
-          ).toLocaleString()}
-        </p>
+                <p className="opened-mail-date">
+                  {new Date(
+                    selectedMail.createdAt
+                  ).toLocaleString()}
+                </p>
 
-      </div>
+              </div>
 
-      <hr />
+              <hr />
 
-      <div
-        className="mail-content"
-        dangerouslySetInnerHTML={{
-          __html: selectedMail.body
-        }}
-      />
+              <div
+                className="mail-content"
+                dangerouslySetInnerHTML={{
+                  __html: selectedMail.body
+                }}
+              />
 
-    </div>
+            </div>
 
-  </div>
+          </div>
 
-)  : (
+        ) : (
 
           /* Mail List */
           <div className="mail-list">
@@ -404,6 +435,17 @@ function Mailbox({ onLogout }) {
                       mail.createdAt
                     ).toLocaleDateString()}
                   </div>
+
+                  {/* Delete */}
+                  <button
+                    className="delete-mail-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteMail(mail.id);
+                    }}
+                  >
+                    Delete
+                  </button>
 
                 </div>
 
