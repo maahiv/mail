@@ -14,7 +14,7 @@ import {
   remove
 } from "firebase/database";
 
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 
 import { auth, db } from "../../firebase";
 import ComposeMail from "../ComposeMail/ComposeMail";
@@ -77,14 +77,22 @@ function Mailbox({ onLogout }) {
   const [showCompose, setShowCompose] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const user = auth.currentUser;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Fetch Inbox
-  const fetchInbox = async () => {
+  const fetchInbox = async (showLoading = false) => {
     if (!user) return;
 
     try {
-      setLoading(true);
+      if (showLoading) { setLoading(true); }
 
       const inboxQuery = query(
         ref(db, "emails"),
@@ -116,7 +124,7 @@ function Mailbox({ onLogout }) {
     } catch (error) {
       console.error("Inbox error:", error);
     } finally {
-      setLoading(false);
+      if (showLoading) { setLoading(false); }
     }
   };
 
@@ -155,9 +163,18 @@ function Mailbox({ onLogout }) {
   };
 
   useEffect(() => {
-    fetchInbox();
+    if (!user) return;
+
+    fetchInbox(true);
     fetchSentMails();
-  }, []);
+
+    const interval = setInterval(() => {
+      fetchInbox(false);
+      fetchSentMails();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [user]);
 
   // Open Mail
   const handleOpenMail = async (mail) => {

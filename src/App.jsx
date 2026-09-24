@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-
 import Auth from "./components/Auth/Auth";
 import Mailbox from "./components/Mailbox/Mailbox";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(
+    !!localStorage.getItem("token")
+  );
 
   if (!loggedIn) {
-    return (
-      <Auth
-        onLogin={() => setLoggedIn(true)}
-      />
-    );
+    return <Auth onLogin={() => setLoggedIn(true)} />;
   }
 
   return (
