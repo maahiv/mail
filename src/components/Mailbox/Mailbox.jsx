@@ -120,7 +120,7 @@ function Mailbox({ onLogout }) {
     }
   };
 
-  // Fetch Sent
+  // Fetch Sent Mails
   const fetchSentMails = async () => {
     if (!user) return;
 
@@ -159,40 +159,47 @@ function Mailbox({ onLogout }) {
     fetchSentMails();
   }, []);
 
-  // Open mail and mark as read
+  // Open Mail
   const handleOpenMail = async (mail) => {
     setSelectedMail(mail);
 
-    if (mail.read === true) {
-      return;
-    }
+    // Only inbox mails need read status
+    if (
+      activeTab === "inbox" &&
+      mail.read === false
+    ) {
+      try {
+        await update(
+          ref(db, `emails/${mail.id}`),
+          {
+            read: true
+          }
+        );
 
-    try {
-      await update(ref(db, `emails/${mail.id}`), {
-        read: true
-      });
+        dispatch({
+          type: "MARK_AS_READ",
+          payload: mail.id
+        });
 
-      dispatch({
-        type: "MARK_AS_READ",
-        payload: mail.id
-      });
-
-      setSelectedMail({
-        ...mail,
-        read: true
-      });
-    } catch (error) {
-      console.error(
-        "Error marking mail as read:",
-        error
-      );
+        setSelectedMail({
+          ...mail,
+          read: true
+        });
+      } catch (error) {
+        console.error(
+          "Error marking mail as read:",
+          error
+        );
+      }
     }
   };
 
-  // Delete mail
+  // Delete Mail
   const handleDeleteMail = async (mailId) => {
     try {
-      await remove(ref(db, `emails/${mailId}`));
+      await remove(
+        ref(db, `emails/${mailId}`)
+      );
 
       dispatch({
         type: "DELETE_MAIL",
@@ -224,7 +231,6 @@ function Mailbox({ onLogout }) {
       ? state.inbox
       : state.sent;
 
-  // Total unread mails
   const unreadCount = state.inbox.filter(
     (mail) => mail.read === false
   ).length;
@@ -319,19 +325,23 @@ function Mailbox({ onLogout }) {
 
         </div>
 
-        {/* Open Mail */}
+        {/* Read Mail */}
         {selectedMail ? (
 
           <div className="open-mail">
 
             <button
               className="back-button"
-              onClick={() => setSelectedMail(null)}
+              onClick={() =>
+                setSelectedMail(null)
+              }
             >
               ← Back
             </button>
 
-            <h2>{selectedMail.subject}</h2>
+            <h2>
+              {selectedMail.subject}
+            </h2>
 
             <div className="opened-mail-box">
 
@@ -372,7 +382,7 @@ function Mailbox({ onLogout }) {
 
         ) : (
 
-          /* Mail List */
+          /* Inbox / Sent List */
           <div className="mail-list">
 
             {loading ? (
@@ -393,6 +403,7 @@ function Mailbox({ onLogout }) {
 
                 <div
                   className={
+                    activeTab === "inbox" &&
                     mail.read === false
                       ? "mail-item unread-mail"
                       : "mail-item read-mail"
@@ -405,15 +416,13 @@ function Mailbox({ onLogout }) {
 
                   {/* Blue Dot */}
                   <div className="mail-dot-area">
-
                     {activeTab === "inbox" &&
                       mail.read === false && (
                         <span className="blue-dot"></span>
                       )}
-
                   </div>
 
-                  {/* Sender */}
+                  {/* Sender / Receiver */}
                   <div className="mail-sender">
                     {activeTab === "inbox"
                       ? mail.sender
@@ -422,11 +431,9 @@ function Mailbox({ onLogout }) {
 
                   {/* Subject */}
                   <div className="mail-preview">
-
                     <span className="mail-subject">
                       {mail.subject}
                     </span>
-
                   </div>
 
                   {/* Date */}
