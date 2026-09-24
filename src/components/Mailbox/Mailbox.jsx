@@ -4,20 +4,11 @@ import React, {
   useState
 } from "react";
 
-import {
-  ref,
-  query,
-  orderByChild,
-  equalTo,
-  get,
-  update,
-  remove
-} from "firebase/database";
-
 import { signOut, onAuthStateChanged } from "firebase/auth";
 
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 import ComposeMail from "../ComposeMail/ComposeMail";
+import useHttp from "../../hooks";
 
 import "./Mailbox.css";
 
@@ -76,13 +67,23 @@ function Mailbox({ onLogout }) {
   const [selectedMail, setSelectedMail] = useState(null);
   const [showCompose, setShowCompose] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const [user, setUser] = useState(null);
 
+  const {
+    fetchInbox: getInbox,
+    fetchSentMails: getSentMails,
+    markAsRead,
+    deleteMail
+  } = useHttp();
+
+  // Get logged-in user
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (currentUser) => {
+        setUser(currentUser);
+      }
+    );
 
     return () => unsubscribe();
   }, []);
@@ -92,30 +93,11 @@ function Mailbox({ onLogout }) {
     if (!user) return;
 
     try {
-      if (showLoading) { setLoading(true); }
-
-      const inboxQuery = query(
-        ref(db, "emails"),
-        orderByChild("receiver"),
-        equalTo(user.email.toLowerCase())
-      );
-
-      const snapshot = await get(inboxQuery);
-      const mails = [];
-
-      if (snapshot.exists()) {
-        snapshot.forEach((child) => {
-          const data = child.val();
-
-          mails.push({
-            id: child.key,
-            ...data,
-            read: data.read === true
-          });
-        });
+      if (showLoading) {
+        setLoading(true);
       }
 
-      mails.sort((a, b) => b.createdAt - a.createdAt);
+      const mails = await getInbox(user.email);
 
       dispatch({
         type: "SET_INBOX",
@@ -124,7 +106,9 @@ function Mailbox({ onLogout }) {
     } catch (error) {
       console.error("Inbox error:", error);
     } finally {
-      if (showLoading) { setLoading(false); }
+      if (showLoading) {
+        setLoading(false);
+      }
     }
   };
 
@@ -133,25 +117,7 @@ function Mailbox({ onLogout }) {
     if (!user) return;
 
     try {
-      const sentQuery = query(
-        ref(db, "emails"),
-        orderByChild("sender"),
-        equalTo(user.email.toLowerCase())
-      );
-
-      const snapshot = await get(sentQuery);
-      const mails = [];
-
-      if (snapshot.exists()) {
-        snapshot.forEach((child) => {
-          mails.push({
-            id: child.key,
-            ...child.val()
-          });
-        });
-      }
-
-      mails.sort((a, b) => b.createdAt - a.createdAt);
+      const mails = await getSentMails(user.email);
 
       dispatch({
         type: "SET_SENT",
@@ -162,6 +128,7 @@ function Mailbox({ onLogout }) {
     }
   };
 
+  // Fetch mails every 2 seconds
   useEffect(() => {
     if (!user) return;
 
@@ -174,24 +141,18 @@ function Mailbox({ onLogout }) {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [user]);
+  }, [user, getInbox, getSentMails]);
 
   // Open Mail
   const handleOpenMail = async (mail) => {
     setSelectedMail(mail);
 
-    // Only inbox mails need read status
     if (
       activeTab === "inbox" &&
       mail.read === false
     ) {
       try {
-        await update(
-          ref(db, `emails/${mail.id}`),
-          {
-            read: true
-          }
-        );
+        await markAsRead(mail.id);
 
         dispatch({
           type: "MARK_AS_READ",
@@ -214,9 +175,7 @@ function Mailbox({ onLogout }) {
   // Delete Mail
   const handleDeleteMail = async (mailId) => {
     try {
-      await remove(
-        ref(db, `emails/${mailId}`)
-      );
+      await deleteMail(mailId);
 
       dispatch({
         type: "DELETE_MAIL",
@@ -239,7 +198,7 @@ function Mailbox({ onLogout }) {
       localStorage.removeItem("token");
       onLogout();
     } catch (error) {
-      console.error(error);
+      console.error("Logout error:", error);
     }
   };
 
@@ -342,7 +301,7 @@ function Mailbox({ onLogout }) {
 
         </div>
 
-        {/* Read Mail */}
+        {/* Open Mail */}
         {selectedMail ? (
 
           <div className="open-mail">
@@ -365,6 +324,7 @@ function Mailbox({ onLogout }) {
               <div className="opened-mail-header">
 
                 <div>
+
                   <p>
                     <strong>From:</strong>{" "}
                     {selectedMail.sender}
@@ -374,6 +334,7 @@ function Mailbox({ onLogout }) {
                     <strong>To:</strong>{" "}
                     {selectedMail.receiver}
                   </p>
+
                 </div>
 
                 <p className="opened-mail-date">

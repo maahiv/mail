@@ -1,104 +1,105 @@
 .compose-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.35);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 20px;
 }
 
 .compose-box {
-  width: 100%;
-  max-width: 750px;
+  width: 650px;
+  max-width: 90%;
   background: white;
   border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
 }
 
 .compose-header {
-  background: #f2f4f7;
-  padding: 13px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 16px 20px;
+  background: #2563eb;
+  color: white;
 }
 
 .compose-header h3 {
   margin: 0;
-  font-size: 16px;
-  color: #202124;
+  font-size: 18px;
 }
 
 .compose-close {
   border: none;
   background: transparent;
+  color: white;
   font-size: 25px;
   cursor: pointer;
-  color: #555;
 }
 
 .compose-body {
-  padding: 0 18px 18px;
+  padding: 20px;
 }
 
 .compose-row {
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 12px;
 }
 
 .compose-row input {
   width: 100%;
-  border: none;
-  outline: none;
-  padding: 14px 4px;
+  padding: 11px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
   font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.compose-row input:focus {
+  border-color: #2563eb;
 }
 
 .compose-editor {
-  min-height: 300px;
-  padding-top: 10px;
-}
-
-.compose-editor .rdw-editor-wrapper {
-  min-height: 300px;
-}
-
-.compose-editor .rdw-editor-main {
-  min-height: 220px;
-  padding: 5px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  min-height: 230px;
+  margin-top: 10px;
 }
 
 .compose-editor .rdw-editor-toolbar {
-  border: 1px solid #e5e7eb;
-  border-radius: 5px;
-  margin-bottom: 8px;
+  border: none;
+  border-bottom: 1px solid #d1d5db;
+  margin-bottom: 0;
+}
+
+.compose-editor .DraftEditor-root {
+  padding: 10px 12px;
+  min-height: 170px;
 }
 
 .compose-error {
-  background: #fee2e2;
-  color: #b91c1c;
-  padding: 9px;
-  border-radius: 5px;
-  margin-bottom: 12px;
-  font-size: 14px;
+  margin-top: 10px;
+  color: #dc2626;
+  font-size: 13px;
 }
 
 .compose-footer {
   display: flex;
-  justify-content: flex-start;
-  padding-top: 10px;
+  justify-content: flex-end;
+  margin-top: 15px;
 }
 
 .send-button {
   border: none;
   background: #2563eb;
   color: white;
-  padding: 10px 25px;
-  border-radius: 20px;
-  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .send-button:hover {
@@ -106,6 +107,16 @@
 }
 
 .send-button:disabled {
-  opacity: 0.6;
+  background: #93c5fd;
   cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .compose-box {
+    width: 95%;
+  }
+
+  .compose-body {
+    padding: 15px;
+  }
 }

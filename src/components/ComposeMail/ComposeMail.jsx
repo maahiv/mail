@@ -7,13 +7,15 @@ import {
 
 import draftToHtml from "draftjs-to-html";
 
-import { ref, push, set } from "firebase/database";
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./ComposeMail.css";
+import useHttp from "../../hooks";
 
 function ComposeMail({ onClose, onMailSent }) {
+  const { sendMail } = useHttp();
+
   const [receiver, setReceiver] = useState("");
   const [subject, setSubject] = useState("");
 
@@ -61,26 +63,22 @@ function ComposeMail({ onClose, onMailSent }) {
         convertToRaw(content)
       );
 
-      const newMailRef = push(ref(db, "emails"));
-
-      await set(newMailRef, {
-  sender: user.email.toLowerCase(),
-  receiver: receiver.trim().toLowerCase(),
-  subject: subject.trim(),
-  body: messageHTML,
-  createdAt: Date.now(),
-  read: false
-});
+      await sendMail(
+        user.email,
+        receiver,
+        subject,
+        messageHTML
+      );
 
       setReceiver("");
       setSubject("");
       setEditorState(EditorState.createEmpty());
 
       if (onMailSent) {
-  await onMailSent();
-}
+        await onMailSent();
+      }
 
-onClose();
+      onClose();
 
     } catch (error) {
       console.error(error);
